@@ -1,0 +1,171 @@
+@import "variables";
+@import "mixins";
+
+* {
+	box-sizing: border-box;
+    transition: all 0.25s ease-out;
+}
+
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100dvh;
+}
+
+html {
+	-webkit-font-smoothing: antialiased;
+	scroll-behavior: smooth;
+}
+
+html,
+body,
+input,
+textarea,
+button,
+select {
+	font-family: "Poppins", sans-serif;
+	font-weight: 400;
+	color: $text-black;
+	font-size: 16px;
+}
+
+button {
+	outline: none !important;
+}
+
+input {
+	outline: none !important;
+	border: none;
+	padding: .5em;
+	border-bottom: .3em solid $secondary-color;
+	
+	&:focus {
+		border-bottom-color: darken($secondary-color, 30%);
+	}
+
+	&:read-only {
+		background-color: $dark-grey;
+		color: $text-white;
+		cursor: pointer;
+		padding-right: 2.5em;
+
+		&:focus {
+			border-bottom: .3em solid $secondary-color;
+		}
+	}
+}
+
+/* Containers */
+.container {
+	margin: 0 auto;
+	padding: 0 2em;
+	max-width: 1200px;
+}
+
+.container-limited {
+	margin: 0 auto;
+	max-width: 768px;
+	padding: 0 2em;
+}
+
+@media (max-width: 576px) {
+	.container,
+	.container-limited {
+		padding: 0 1em;
+	}
+}
+/* Containers -- End */
+
+.btn, .btn-red {
+	padding: 0.5em 2em;
+	border: transparent;
+	box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+	background: dodgerblue;
+	color: $text-white;
+	border-radius: .5em;
+	cursor: pointer;
+
+	&:hover {
+ 		background: linear-gradient(90deg, rgba(30,144,255,1) 0%, rgba(0,212,255,1) 100%);
+	}
+
+	&:active {
+		transform: translateY(.2em);
+	}
+
+	&:disabled {
+		background: unset;
+		background-color: $dark-grey;
+		opacity: .7;
+		cursor: not-allowed;
+	}
+}
+
+.btn-red {
+	background: red;
+
+	&:hover {
+ 		background: linear-gradient(90deg, rgb(255, 30, 79) 0%, rgb(255, 0, 64) 100%);
+	}
+
+	&:disabled {
+		background: unset;
+		background-color: $dark-grey;
+		opacity: .7;
+		cursor: not-allowed;
+	}
+}
+
+.warning {
+	font-size: .9em;
+	color: red;
+	margin: 1em auto;
+	text-align: center;
+	max-width: 30em;
+}
+
+.small, .small-italic {
+	font-size: .9em;
+	color: $light-grey;
+}
+
+.small-italic {
+	font-style: italic;
+}
+
+.loader-wrap {
+	@include flex-center;
+}
+
+.loader {
+	border: .3em solid $text-white;
+	border-top: .3em solid transparent;
+	border-radius: 50%;
+	width: 2.5em;
+	height: 2.5em;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+::-webkit-scrollbar {
+	width: 0.5em;
+	height: 0.5em;
+}
+
+::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: $light-grey;
+    border-radius: 100em;
+}
