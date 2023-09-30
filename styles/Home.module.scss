@@ -1,0 +1,46 @@
+@import "variables";
+@import "mixins";
+
+.main {
+    // @include flex-center-column;
+    // min-height: 100dvh;
+    padding: 2em 1em;
+
+    form {
+        width: 100%;
+        max-width: 30em;
+        margin: 0 auto;
+
+        & > label {
+            width: 100%;
+
+            & > div {
+                font-weight: bold;
+                color: $primary-color;
+            }
+
+            & > input {
+                width: 100%;
+                margin-bottom: 1em;
+            }
+        }
+
+        & > button {
+            width: 100%;
+        }
+    }
+
+    .results {
+        margin: 2em 0;
+        columns: 3;
+        column-gap: 1em;
+
+        @media (max-width: 1200px) {
+            columns: 2;
+        }
+
+        @media (max-width: 768px) {
+            columns: 1;
+        }
+    }
+}
