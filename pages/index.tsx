@@ -66,6 +66,8 @@ const Home = () => {
             console.error(`Error making request -> `, e);
             toast.error('Something went wrong! Please try again.');
         } finally {
+            // reset the keyword
+            setKeyword('');
             setLoading(false);
         }
     }
