@@ -2,8 +2,6 @@
 @import "mixins";
 
 .main {
-    // @include flex-center-column;
-    // min-height: 100dvh;
     padding: 2em 1em;
 
     form {
@@ -32,15 +30,35 @@
 
     .results {
         margin: 2em 0;
-        columns: 3;
-        column-gap: 1em;
-
-        @media (max-width: 1200px) {
-            columns: 2;
-        }
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1em;
 
         @media (max-width: 768px) {
-            columns: 1;
+            grid-template-columns: repeat(2, 1fr);
         }
+
+        @media (max-width: 576px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    h2 {
+        text-align: center;
+        margin-top: 2em;
+    }
+
+    .sort-wrap {
+        @include vertical-center;
+        gap: .3em;
+        margin: 1em 0;
+    }
+
+    & > input {
+        border-width: .1em;
+        display: block;
+        width: 100%;
+        max-width: 30em;
+        margin: 0 auto;
     }
 }

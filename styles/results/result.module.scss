@@ -1,0 +1,21 @@
+@import "variables";
+@import "mixins";
+
+.main {
+    padding: 2em 1em;
+    text-align: center;
+
+    .content {
+        margin: 2em 0;
+        padding: 2em;
+        border-radius: .5em;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        text-align: left;
+
+        & > h2 {
+            text-align: center;
+            max-width: 30em;
+            margin: 0 auto;
+        }
+    }
+}

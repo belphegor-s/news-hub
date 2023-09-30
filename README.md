@@ -2,7 +2,7 @@
 
 A news collector Application using Metaphor Systems API and NextJS serverless functions
 
-### Setup
+### Local Setup
 
 - Please add a `.env` file at the very root of the project with following content:
 

@@ -3,6 +3,7 @@ import ResultCard from "@/components/ResultCard";
 import styles from "@/styles/Home.module.scss";
 import { obj } from "@/types/global";
 import axiosPost from "@/utils/axiosPost";
+import sortByDate, { SortFormat } from "@/utils/sortByDate";
 import Head from "next/head";
 import { FormEvent, useState } from "react";
 import { toast } from "react-toastify";
@@ -10,6 +11,8 @@ import { toast } from "react-toastify";
 const Home = () => {
     const [loading, setLoading] = useState(false);
     const [resultData, setResultData] = useState<obj[]>([]);
+    const [keyword, setKeyword] = useState('');
+    const [sortFormat, setSortFormat] = useState<SortFormat>(SortFormat.DESCENDING);
 
     const onFormSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -42,6 +45,39 @@ const Home = () => {
         }
     }
 
+    const onFindSimilarClickHandler = async (url: string) => {
+        if(loading) return;
+
+        setLoading(true);
+
+        try {
+            const response = await axiosPost(`/api/search-similar`, {
+                url,
+                numOfResults: resultData?.length ?? 10
+            });
+
+            if(response && response?.status === 200) {
+                toast.success(response.data?.msg);
+                setResultData(response.data?.data);
+            } else {
+                toast.error(response.data?.msg);
+            }
+        } catch(e) {
+            console.error(`Error making request -> `, e);
+            toast.error('Something went wrong! Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const onSortFormatChangeHandler = () => {
+        if(sortFormat === SortFormat.ASCENDING) {
+            setSortFormat(SortFormat.DESCENDING);
+        } else {
+            setSortFormat(SortFormat.ASCENDING);
+        }
+    }
+
     return (
         <>
             <Head>
@@ -61,14 +97,25 @@ const Home = () => {
                         <button className="btn">Make a Search</button>
                     }
                 </form>
-                {resultData && resultData?.length > 0 &&
-                    <div className={styles.results}>
-                        {resultData?.map((data: obj, i: number) => {
-                            return (
-                                <ResultCard key={`result-card-${i}`} title={data?.title} id={data?.id} url={data?.url} publishedDate={data?.publishedDate}/>
-                            )
-                        })}
-                    </div>
+                {resultData && resultData?.length > 0 && !loading &&
+                    <>
+                        <h2>Results</h2>
+                        <div className={styles['sort-wrap']}>
+                            <label htmlFor="sort-data" className="switch" onClick={onSortFormatChangeHandler}>
+                                <input type="checkbox" checked={sortFormat === SortFormat.DESCENDING}/>
+                                <span className="slider round"></span>
+                            </label>
+                            <div>Latest on {sortFormat === SortFormat.DESCENDING ? 'Top' : 'Bottom'}</div>
+                        </div>
+                        <input type="text" placeholder="Filter your search" onChange={(e) => setKeyword(e.target.value)}/>
+                        <div className={styles.results}>
+                            {sortByDate(resultData, sortFormat)?.filter((data: obj) => keyword.toLowerCase() === '' ? data : data?.title?.toLowerCase()?.includes(keyword?.toLowerCase()))?.map((data: obj, i: number) => {
+                                return (
+                                    <ResultCard key={`result-card-${i}`} title={data?.title} id={data?.id} url={data?.url} publishedDate={data?.publishedDate} onFindSimilarClickHandler={onFindSimilarClickHandler}/>
+                                )
+                            })}
+                        </div>
+                    </>
                 }
             </main>
         </>
